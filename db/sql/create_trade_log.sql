@@ -10,22 +10,28 @@ CREATE TABLE `slice_balance_example` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `slice_order_example` (
-    `id`            BIGINT UNSIGNED NOT NULL PRIMARY KEY,
-    `t`             TINYINT UNSIGNED NOT NULL,
-    `side`          TINYINT UNSIGNED NOT NULL,
-    `create_time`   DOUBLE NOT NULL,
-    `update_time`   DOUBLE NOT NULL,
-    `user_id`       INT UNSIGNED NOT NULL,
-    `market`        VARCHAR(30) NOT NULL,
-    `price`         DECIMAL(30,8) NOT NULL,
-    `amount`        DECIMAL(30,8) NOT NULL,
-    `taker_fee`     DECIMAL(30,4) NOT NULL,
-    `maker_fee`     DECIMAL(30,4) NOT NULL,
-    `left`          DECIMAL(30,8) NOT NULL,
-    `freeze`        DECIMAL(30,8) NOT NULL,
-    `deal_stock`    DECIMAL(30,8) NOT NULL,
-    `deal_money`    DECIMAL(30,16) NOT NULL,
-    `deal_fee`      DECIMAL(30,12) NOT NULL
+  `id` bigint(20) unsigned NOT NULL,
+  `t` tinyint(3) unsigned NOT NULL,
+  `side` tinyint(3) unsigned NOT NULL,
+  `create_time` double NOT NULL,
+  `update_time` double NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `market` varchar(30) NOT NULL,
+  `price` decimal(30,9) NOT NULL,
+  `amount` decimal(30,8) NOT NULL,
+  `taker_fee` decimal(30,4) NOT NULL,
+  `maker_fee` decimal(30,4) NOT NULL,
+  `left` decimal(30,8) NOT NULL,
+  `freeze` decimal(30,8) NOT NULL,
+  `deal_stock` decimal(30,8) NOT NULL,
+  `deal_money` decimal(30,16) NOT NULL,
+  `deal_fee` decimal(30,12) NOT NULL,
+  `token` varchar(30) NOT NULL,
+  `token_rate` decimal(30,8) NOT NULL,
+  `asset_rate` decimal(30,8) NOT NULL,
+  `discount` decimal(30,4) NOT NULL,
+  `deal_token` decimal(30,16) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `slice_history` (
@@ -41,3 +47,4 @@ CREATE TABLE `operlog_example` (
     `time`          DOUBLE NOT NULL,
     `detail`        TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
