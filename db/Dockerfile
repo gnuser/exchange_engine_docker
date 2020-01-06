@@ -13,7 +13,7 @@ ENV WORK_PATH /sql/
 
 ENV FILE_0 create_trade_history.sql
 ENV FILE_1 create_trade_log.sql
-ENV FILE_2 creat_trade_coin.sql
+ENV FILE_2 create_trade_coin.sql
 
 RUN mkdir -p $WORK_PATH
 COPY sql/*.sql /sql/
