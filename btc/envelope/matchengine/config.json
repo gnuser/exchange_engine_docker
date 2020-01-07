@@ -27,7 +27,7 @@
         "host": "db",
         "user": "root",
         "pass": "root",
-        "name": "envelop"
+        "name": "envelope_log"
     },
     "db_history": {
         "host": "db",
