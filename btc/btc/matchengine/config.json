@@ -41,6 +41,12 @@
         "pass": "root",
         "name": "trade_coin"
     },
+    "redis": {
+        "name": "mymaster",
+        "addr": [
+		"redis_sentinel:26379"
+        ]
+    },
     "brokers": "kafka:9092",
     "slice_interval": 3600,
     "slice_keeptime": 259200
