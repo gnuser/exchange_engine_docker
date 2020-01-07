@@ -1,0 +1,54 @@
+{
+    "debug": true,
+    "process": {
+        "file_limit": 1000000,
+        "core_limit": 1000000000
+    },
+    "log": {
+        "path": "/var/log/trade/conversion",
+        "flag": "fatal,error,warn,info,debug,trace",
+        "num": 10
+    },
+    "alert": {
+        "host": "matchengine",
+        "addr": "127.0.0.1:4444"
+    },
+    "svr": {
+        "bind": [
+            "tcp@0.0.0.0:6316",
+            "udp@0.0.0.0:6316"
+        ],
+        "buf_limit": 100,
+        "max_pkg_size": 10240,
+        "heartbeat_check": false
+    },
+    "cli": "tcp@127.0.0.1:6317",
+    "db_log": {
+        "host": "db",
+        "user": "root",
+        "pass": "root",
+        "name": "trade_log"
+    },
+    "db_history": {
+        "host": "db",
+        "user": "root",
+        "pass": "root",
+        "name": "trade_history"
+    },
+    "db_bitasia": {
+        "host": "db",
+        "user": "root",
+        "pass": "root",
+        "name": "trade_coin"
+    },
+    "redis": {
+        "name": "mymaster",
+        "addr": [
+		"redis_sentinel:26379"
+        ]
+    },
+    "brokers": "kafka:9092",
+    "slice_interval": 3600,
+    "slice_keeptime": 259200,
+    "mainmarket": "127.0.0.1:8080"
+}

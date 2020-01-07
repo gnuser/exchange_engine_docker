@@ -1,6 +1,6 @@
 FROM ubuntu:xenial AS btc-build
 
-MAINTAINER Guo Yukun
+MAINTAINER gnuser
 
 RUN sed -i "s/archive.ubuntu./mirrors.aliyun./g" /etc/apt/sources.list
 
@@ -71,11 +71,10 @@ RUN wget https://codeload.github.com/gnuser/xpay_server/tar.gz/master -O /src/xp
     make &&\
     cd /src/envelope/network &&\
     make clean && make &&\
-    cd /src/envelope/depends/hiredis &&\
-    make && make install &&\
     cd /src/envelope/utils/ &&\
-    make &&\
-    /bin/bash /src/build.sh
+    make
+
+RUN /bin/bash /src/build.sh
 
 WORKDIR /btc/
 
@@ -96,6 +95,9 @@ RUN mkdir -p /var/log/trade &&\
 RUN mv /src/envelope/matchengine/envelope.exe /btc/envelope/matchengine/ &&\
 	mv /src/envelope/accesshttp/el_http.exe /btc/envelope/accesshttp/ &&\
 	mv /src/envelope/expire/envelope_expired /btc/envelope/expire/
+
+RUN mv /src/conversion/matchengine/conversion.exe /btc/conversion/matchengine/ &&\
+        mv /src/conversion/accesshttp/cs_http.exe /btc/conversion/accesshttp/ 
 
 RUN chmod +x /btc/*/*.sh &&
 	chmod +x /btc/*/*.exe &&
@@ -129,5 +131,13 @@ EXPOSE 5316
 EXPOSE 5444
 
 CMD ["/btc/envelope/start.sh"]
+
+# conversion
+EXPOSE 6316
+
+# accesshttp
+EXPOSE 6444
+
+CMD ["/btc/conversion/start.sh"]
 
 
