@@ -32,3 +32,13 @@ cd /src/viabtc/readhistory
 sed -i "$c" makefile
 sed -i "$l" makefile
 make
+
+cd  /src/envelope/matchengine
+sed -i "$c" makefile
+sed -i "$l" makefile
+make
+
+cd  /src/envelope/accesshttp/
+make
+
+

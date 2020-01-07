@@ -48,7 +48,6 @@ RUN apt-get install -y liblz4-dev
 ADD build.sh /src/build.sh
 
 # 编译viabtc
-#RUN wget https://codeload.github.com/viabtc/viabtc_exchange_server/tar.gz/master -O /src/viabtc.tar.gz &&\
 RUN wget https://codeload.github.com/gnuser/exchange_engine/tar.gz/master -O /src/viabtc.tar.gz &&\
  	tar xzvf /src/viabtc.tar.gz  &&\
  	rm -rf /src/viabtc.tar.gz &&\
@@ -58,6 +57,23 @@ RUN wget https://codeload.github.com/gnuser/exchange_engine/tar.gz/master -O /sr
     cd /src/viabtc/depends/hiredis &&\
     make && make install &&\
     cd /src/viabtc/utils/ &&\
+    make &&\
+
+# 编译红包和微交易
+RUN wget https://codeload.github.com/gnuser/xpay_server/tar.gz/master -O /src/xpay.tar.gz &&\
+        tar xzvf /src/xpay.tar.gz  &&\
+        rm -rf /src/xpay.tar.gz &&\
+        mv xpay_server-master/envelope_server* envelope &&\
+	mv xpay_server-master/conversion_server* conversion &&\
+    cd /src/conversion/network &&\
+    make clean && make &&\
+    cd /src/conversion/utils/ &&\
+    make &&\
+    cd /src/envelope/network &&\
+    make clean && make &&\
+    cd /src/envelope/depends/hiredis &&\
+    make && make install &&\
+    cd /src/envelope/utils/ &&\
     make &&\
     /bin/bash /src/build.sh
 
@@ -75,9 +91,15 @@ RUN mkdir -p /var/log/trade &&\
 	mv /src/viabtc/marketprice/marketprice.exe  /btc/marketprice/ &&\
 	mv /src/viabtc/accessws/accessws.exe  /btc/accessws/ &&\
 	mv /src/viabtc/alertcenter/alertcenter.exe  /btc/alertcenter/ &&\
-	mv /src/viabtc/readhistory/readhistory.exe  /btc/readhistory/ &&\
-	chmod +x /btc/*.sh &&\
-	chmod +x /btc/*/*.exe
+	mv /src/viabtc/readhistory/readhistory.exe  /btc/readhistory/
+
+RUN mv /src/envelope/matchengine/envelope.exe /btc/envelope/matchengine/ &&\
+	mv /src/envelope/accesshttp/el_http.exe /btc/envelope/accesshttp/ &&\
+	mv /src/envelope/expire/envelope_expired /btc/envelope/expire/
+
+RUN chmod +x /btc/*/*.sh &&
+	chmod +x /btc/*/*.exe &&
+	chmod +x /btc/envelope/expire/envelope_expired
 
 # marketprice
 EXPOSE 7416
@@ -99,3 +121,13 @@ EXPOSE 8081
 EXPOSE 8091
 
 CMD ["/btc/start.sh"]
+
+# envelope matchengine
+EXPOSE 5316
+
+# accesshttp
+EXPOSE 5444
+
+CMD ["/btc/envelope/start.sh"]
+
+
