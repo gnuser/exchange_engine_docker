@@ -24,8 +24,6 @@ RUN chmod a+x  /docker-entrypoint-initdb.d/$INSTALL_DATA_SHELL
 RUN mkdir -p $WORK_PATH/envelope/
 RUN mkdir -p /docker-entrypoint-initdb.d/envelope/
 COPY envelope/*.sql /sql/envelope/
-COPY envelope/*.sh*  /docker-entrypoint-initdb.d/envelope/
-RUN chmod a+x  /docker-entrypoint-initdb.d/envelope/$INSTALL_DATA_SHELL
 
 
 RUN mkdir -p $WORK_PATH/conversion/
@@ -33,7 +31,6 @@ RUN mkdir -p /docker-entrypoint-initdb.d/conversion/
 
 COPY conversion/*.sql /sql/conversion/
 COPY conversion/*.sh*  /docker-entrypoint-initdb.d/conversion/
-RUN chmod a+x  /docker-entrypoint-initdb.d/conversion/$INSTALL_DATA_SHELL
 
 EXPOSE 3306
 

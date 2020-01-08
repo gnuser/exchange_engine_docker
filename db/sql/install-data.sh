@@ -15,5 +15,4 @@ source $WORK_PATH/conversion/$FILE_1;
 EOF
 #
 sh /docker-entrypoint-initdb.d/init_trade_history.sh1
-sh /docker-entrypoint-initdb.d/envelope/init_trade_history.sh1
 sh /docker-entrypoint-initdb.d/conversion/init_trade_history.sh1
