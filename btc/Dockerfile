@@ -7,9 +7,9 @@ RUN sed -i "s/archive.ubuntu./mirrors.aliyun./g" /etc/apt/sources.list
 RUN apt-get update &&\
     apt-get install -y wget vim psmisc &&\
 	# 依赖包
-	apt-get -y install libev-dev libssl-dev libmpdec-dev libjansson-dev libmysqlclient-dev &&\
+	apt-get -y install libev-dev libssl-dev libmpdec-dev libjansson-dev libmysqlclient-dev libcurl4-openssl-dev &&\
  	# 安装构建工具
-	apt-get install -y  build-essential autoconf libtool python &&\
+	apt-get install -y  build-essential autoconf libtool python cmake &&\
 	# 清理
 	#rm -rf /var/lib/apt/lists/* &&\
 	# 建立工作目录
@@ -57,7 +57,7 @@ RUN wget https://codeload.github.com/gnuser/exchange_engine/tar.gz/master -O /sr
     cd /src/viabtc/depends/hiredis &&\
     make && make install &&\
     cd /src/viabtc/utils/ &&\
-    make &&\
+    make
 
 # 编译红包和微交易
 RUN wget https://codeload.github.com/gnuser/xpay_server/tar.gz/master -O /src/xpay.tar.gz &&\
@@ -83,6 +83,8 @@ CMD /bin/bash
 FROM btc-build
 
 COPY /btc/ /btc/
+COPY /envelope/ /envelope/
+COPY /conversion/ /conversion/
 
 RUN mkdir -p /var/log/trade &&\
 	mv /src/viabtc/matchengine/matchengine.exe  /btc/matchengine/ &&\
@@ -92,16 +94,23 @@ RUN mkdir -p /var/log/trade &&\
 	mv /src/viabtc/alertcenter/alertcenter.exe  /btc/alertcenter/ &&\
 	mv /src/viabtc/readhistory/readhistory.exe  /btc/readhistory/
 
-RUN mv /src/envelope/matchengine/envelope.exe /btc/envelope/matchengine/ &&\
-	mv /src/envelope/accesshttp/el_http.exe /btc/envelope/accesshttp/ &&\
-	mv /src/envelope/expire/envelope_expired /btc/envelope/expire/
+RUN mv /src/envelope/matchengine/envelope.exe /envelope/matchengine/ &&\
+	mv /src/envelope/accesshttp/el_http.exe /envelope/accesshttp/ &&\
+	mv /src/envelope/expire/envelope_expired /envelope/expire/
 
-RUN mv /src/conversion/matchengine/conversion.exe /btc/conversion/matchengine/ &&\
-        mv /src/conversion/accesshttp/cs_http.exe /btc/conversion/accesshttp/ 
+RUN mv /src/conversion/matchengine/conversion.exe /conversion/matchengine/ &&\ 
+        mv /src/conversion/accesshttp/cs_http.exe /conversion/accesshttp/ 
 
-RUN chmod +x /btc/*/*.sh &&
-	chmod +x /btc/*/*.exe &&
-	chmod +x /btc/envelope/expire/envelope_expired
+RUN chmod +x /btc/*/*.sh &&\
+	chmod +x /btc/*.sh &&\
+	chmod +x /btc/*/*.exe &&\
+	chmod +x /envelope/*.sh &&\
+	chmod +x /envelope/*/*.sh &&\
+	chmod +x /envelope/*/*.exe &&\
+	chmod +x /conversion/*.sh &&\
+	chmod +x /conversion/*/*.sh &&\
+	chmod +x /conversion/*/*.sh &&\
+	chmod +x /envelope/expire/envelope_expired
 
 # marketprice
 EXPOSE 7416
@@ -122,7 +131,6 @@ EXPOSE 8081
 # monitor
 EXPOSE 8091
 
-CMD ["/btc/start.sh"]
 
 # envelope matchengine
 EXPOSE 5316
@@ -130,14 +138,13 @@ EXPOSE 5316
 # accesshttp
 EXPOSE 5444
 
-CMD ["/btc/envelope/start.sh"]
-
 # conversion
 EXPOSE 6316
 
 # accesshttp
 EXPOSE 6444
 
-CMD ["/btc/conversion/start.sh"]
+ENV LD_LIBRARY_PATH /usr/local/lib
 
-
+CMD /btc/start.sh  
+#&& /envelope/start.sh && /conversion/start.sh

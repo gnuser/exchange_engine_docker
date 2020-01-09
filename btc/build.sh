@@ -41,4 +41,14 @@ make
 cd  /src/envelope/accesshttp/
 make
 
+cd /src/envelope/expire/
+cmake .
+make
 
+cd  /src/conversion/matchengine
+sed -i "$c" makefile
+sed -i "$l" makefile
+make
+
+cd  /src/conversion/accesshttp/
+make
