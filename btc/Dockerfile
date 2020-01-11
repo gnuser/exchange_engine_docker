@@ -136,13 +136,13 @@ EXPOSE 8091
 EXPOSE 5316
 
 # accesshttp
-EXPOSE 5444
+EXPOSE 5080
 
 # conversion
 EXPOSE 6316
 
 # accesshttp
-EXPOSE 6444
+EXPOSE 6080
 
 ENV LD_LIBRARY_PATH /usr/local/lib
 
